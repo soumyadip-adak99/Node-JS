@@ -45,19 +45,18 @@ const homeHandler = (req, res) => {
 
         req.on('end', () => {
             const fullBody = Buffer.concat(body).toString();
-            console.log("Raw body:", fullBody);
 
             const params = new URLSearchParams(fullBody);
             const bodyObject = Object.fromEntries(params);
 
-            console.log("Parsed body:", bodyObject);
+            console.log(bodyObject);
 
             const sum = Number(bodyObject.number1) + Number(bodyObject.number2);
             console.log("Sum:", sum);
 
             res.setHeader("Content-type", "text/html")
             res.write(`
-                    <html>
+                    <html lang="en">
                         <head>
                             <title>Calculate result</title>
                         </head>
