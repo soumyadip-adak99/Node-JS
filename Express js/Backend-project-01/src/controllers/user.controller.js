@@ -144,9 +144,11 @@ const logoutUser = asyncHandler(async (req, res) => {
 });
 
 const refreshAccesToken = asyncHandler(async (req, res) => {
-    const incommingRefreshToken = req.cookies.refreshAccesToken || req.body
+    const incommingRefreshToken = req.cookies.refreshToken || req.body
 
-    if (!incommingRefreshToken) throw new ApiError(401, "Unothorize request")
+    if (!incommingRefreshToken) {
+        throw new ApiError(401, "Unothorize request")
+    }
 
     try {
         const decodedToken = jwt.verify(incommingRefreshToken, process.env.REFRESH_TOKEN_SECRET)
@@ -155,7 +157,9 @@ const refreshAccesToken = asyncHandler(async (req, res) => {
 
         if (!user) throw new ApiError(401, "Invalid refresh token")
 
-        if (incommingRefreshToken !== user?.refreshToken) throw new ApiError(401, "Refresh token is expaire.")
+        if (incommingRefreshToken !== user?.refreshToken) {
+            throw new ApiError(401, "Refresh token is expaire.")
+        }
 
         const options = {
             httpOnly: true,
