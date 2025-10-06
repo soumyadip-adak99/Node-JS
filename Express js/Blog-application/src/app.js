@@ -16,7 +16,9 @@ app.use(cookieParser());
 
 // routes imports
 import healthCheckRouter from './routes/healthChekc.router.js';
-import userRouter from "./routes/user.router.js"
+import publicRoute from "./routes/public.route.js";
+import userRoute from "./routes/user.route.js";
+
 
 // routes declaration
 export const BASE_API = "/api/v1";
@@ -24,7 +26,10 @@ export const BASE_API = "/api/v1";
 // health -check controller
 app.use(`${BASE_API}/health-check`, healthCheckRouter)
 
+// public controllers
+app.use(`${BASE_API}/public`, publicRoute)
+
 // user controllers
-app.use(`${BASE_API}/user`, userRouter)
+app.use(`${BASE_API}/user`, userRoute)
 
 export { app };
