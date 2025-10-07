@@ -3,6 +3,7 @@ import { ApiError } from "../utils/ApiError.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
 import { asyncHandler } from "../utils/asyncHandler.js";
 import { generateAccessAndRefreshToken } from "../utils/generateToken.js";
+import { options } from "../utils/constance.js";
 
 export const registerUser = asyncHandler(async (req, res) => {
     const { first_name, last_name, email, password } = req.body;
@@ -58,8 +59,6 @@ export const loginUser = asyncHandler(async (req, res) => {
     const { accessToken, refreshToken } = await generateAccessAndRefreshToken(user._id);
 
     const loggedUser = await User.findById(user._id).select("-password -refreshToken");
-
-    const options = { httpOnly: true, secure: true, sameSite: "lax" };
 
     return res
         .status(200)

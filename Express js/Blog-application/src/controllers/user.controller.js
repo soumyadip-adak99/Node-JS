@@ -27,3 +27,6 @@ export const getUserDetails = asyncHandler(async (req, res) => {
         return res.status(500).json(new ApiError(500, "Something went on server."));
     }
 });
+
+
+
