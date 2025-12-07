@@ -3,6 +3,7 @@ import { asyncHandler } from "../utils/asyncHandler.js";
 import { oauth2Client } from "../utils/google.config.js";
 import { User } from "../models/user.model.js";
 import { generateToken } from "../utils/generateTokens.js";
+import { sendWelcomeEmail } from "../utils/SendEmail.js";
 
 export const googleLogin = asyncHandler(async (req, res) => {
     try {
@@ -28,9 +29,11 @@ export const googleLogin = asyncHandler(async (req, res) => {
 
         const { token } = await generateToken(user._id);
 
+        await sendWelcomeEmail(user.email);
+
         return res.status(200).json({
             message: "User logged in successfully",
-            token, 
+            token,
             user: {
                 _id: user._id,
                 name: user.name,

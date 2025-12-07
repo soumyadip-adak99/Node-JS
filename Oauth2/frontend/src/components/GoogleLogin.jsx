@@ -1,14 +1,17 @@
 import { useGoogleLogin } from "@react-oauth/google";
 import { googleAuth } from "../api/api";
 import { useNavigate } from "react-router-dom";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
 function GoogleLogin() {
+    const [loading, setLoading] = useState(false);
+
     const navigate = useNavigate();
 
     const responseGoogle = async (authResult) => {
         try {
             if (authResult["code"]) {
+                setLoading(true);
                 const result = await googleAuth(authResult["code"]);
 
                 const { email, name, image } = result.data.user;
@@ -22,18 +25,24 @@ function GoogleLogin() {
             }
         } catch (error) {
             console.error("Error while requesting google code: ", error);
+        } finally {
+            setLoading(false);
         }
     };
-
-    useEffect(()=>{
-        
-    },[])
 
     const googleLogin = useGoogleLogin({
         onSuccess: responseGoogle,
         onError: responseGoogle,
         flow: "auth-code",
     });
+
+    if (loading) {
+        return (
+            <div className="flex justify-center items-center min-h-screen text-gray-900">
+                <div className="text-xl animate-pulse">Loading...</div>
+            </div>
+        );
+    }
 
     return (
         <div className="mt-10 flex justify-center">
