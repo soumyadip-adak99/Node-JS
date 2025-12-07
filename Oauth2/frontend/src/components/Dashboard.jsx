@@ -1,9 +1,53 @@
-import React from 'react'
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 function Dashboard() {
-  return (
-    <div>Dashboard</div>
-  )
+    const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
+
+    useEffect(() => {
+        const data = localStorage.getItem("user-info");
+        if (data) {
+            setUserInfo(JSON.parse(data));
+        }
+    }, []);
+
+    const handleLogout = () => {
+        localStorage.removeItem("user-info");
+        navigate("/");
+    };
+
+    return (
+        <div className="flex justify-center items-center min-h-screen text-white px-4">
+            <div className="bg-gray-800 p-8 rounded-2xl shadow-xl w-full max-w-md text-center border border-gray-700">
+                <div className="flex justify-center mb-6">
+                    <img
+                        src={userInfo?.image}
+                        alt="user"
+                        referrerPolicy="no-referrer"
+                        className="w-24 h-24 rounded-full object-cover shadow-md border border-gray-600"
+                    />
+                </div>
+
+                <h1 className="text-3xl font-semibold mb-2">
+                    Welcome, <span className="text-blue-400">{userInfo?.name}</span>
+                </h1>
+
+                <p className="text-gray-300 text-lg">
+                    Email: <span className="text-gray-100">{userInfo?.email}</span>
+                </p>
+
+                <div className="h-px bg-gray-700 my-6"></div>
+
+                <button
+                    onClick={handleLogout}
+                    className="bg-red-900/50 border border-rose-800 p-4 rounded-xl shadow-inner"
+                >
+                    Log out
+                </button>
+            </div>
+        </div>
+    );
 }
 
-export default Dashboard
+export default Dashboard;

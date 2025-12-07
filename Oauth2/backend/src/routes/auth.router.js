@@ -3,4 +3,6 @@ import { googleLogin } from "../controllers/auth.controller.js";
 
 const router = Router();
 
-router.route("/").get(googleLogin);
+router.route("/google").get(googleLogin);
+
+export default router;
